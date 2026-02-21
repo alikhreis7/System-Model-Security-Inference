@@ -1,0 +1,389 @@
+{
+  "MedGateway_System": {
+    "metadata": {
+      "id": "blk_medgateway",
+      "name": "MedGateway_System",
+      "product": null,
+      "version": null,
+      "cpe": null
+    },
+    "matched_cves": []
+  },
+  "ClinicalDashboard_WebApp": {
+    "metadata": {
+      "id": "blk_webapp",
+      "name": "ClinicalDashboard_WebApp",
+      "product": "Spring Framework",
+      "version": "5.3.18",
+      "cpe": "cpe:2.3:a:vmware:spring_framework:5.3.18:*:*:*:*:*:*:*"
+    },
+    "matched_cves": [
+      {
+        "cve_id": "CVE-2022-22968",
+        "description": "In Spring Framework versions 5.3.0 - 5.3.18, 5.2.0 - 5.2.20, and older unsupported versions, the patterns for disallowedFields on a DataBinder are case sensitive which means a field is not effectively protected unless it is listed with both upper and lower case for the first character of the field, including upper and lower case for the first character of all nested fields within the property path."
+      }
+    ]
+  },
+  "AuditLog_Service": {
+    "metadata": {
+      "id": "blk_logging",
+      "name": "AuditLog_Service",
+      "product": "Log4j",
+      "version": "2.14.1",
+      "cpe": "cpe:2.3:a:apache:log4j:2.14.1:*:*:*:*:*:*:*"
+    },
+    "matched_cves": []
+  },
+  "PatientData_Store": {
+    "metadata": {
+      "id": "blk_database",
+      "name": "PatientData_Store",
+      "product": "PostgreSQL",
+      "version": "14.2",
+      "cpe": "cpe:2.3:a:postgresql:postgresql:14.2:*:*:*:*:*:*:*"
+    },
+    "matched_cves": [
+      {
+        "cve_id": "CVE-2023-31136",
+        "description": "PostgresNIO is a Swift client for PostgreSQL. Any user of PostgresNIO prior to version 1.14.2 connecting to servers with TLS enabled is vulnerable to a man-in-the-middle attacker injecting false responses to the client's first few queries, despite the use of TLS certificate verification and encryption. The vulnerability is addressed in PostgresNIO versions starting from 1.14.2. There are no known workarounds for unpatched users."
+      },
+      {
+        "cve_id": "CVE-2025-12817",
+        "description": "Missing authorization in PostgreSQL CREATE STATISTICS command allows a table owner to achieve denial of service against other CREATE STATISTICS users by creating in any schema.  A later CREATE STATISTICS for the same name, from a user having the CREATE privilege, would then fail.  Versions before PostgreSQL 18.1, 17.7, 16.11, 15.15, 14.20, and 13.23 are affected."
+      },
+      {
+        "cve_id": "CVE-2025-12818",
+        "description": "Integer wraparound in multiple PostgreSQL libpq client library functions allows an application input provider or network peer to cause libpq to undersize an allocation and write out-of-bounds by hundreds of megabytes.  This results in a segmentation fault for the application using libpq.  Versions before PostgreSQL 18.1, 17.7, 16.11, 15.15, 14.20, and 13.23 are affected."
+      },
+      {
+        "cve_id": "CVE-2026-2003",
+        "description": "Improper validation of type \"oidvector\" in PostgreSQL allows a database user to disclose a few bytes of server memory.  We have not ruled out viability of attacks that arrange for presence of confidential information in disclosed bytes, but they seem unlikely.  Versions before PostgreSQL 18.2, 17.8, 16.12, 15.16, and 14.21 are affected."
+      },
+      {
+        "cve_id": "CVE-2026-2004",
+        "description": "Missing validation of type of input in PostgreSQL intarray extension selectivity estimator function allows an object creator to execute arbitrary code as the operating system user running the database.  Versions before PostgreSQL 18.2, 17.8, 16.12, 15.16, and 14.21 are affected."
+      },
+      {
+        "cve_id": "CVE-2026-2005",
+        "description": "Heap buffer overflow in PostgreSQL pgcrypto allows a ciphertext provider to execute arbitrary code as the operating system user running the database.  Versions before PostgreSQL 18.2, 17.8, 16.12, 15.16, and 14.21 are affected."
+      },
+      {
+        "cve_id": "CVE-2026-2006",
+        "description": "Missing validation of multibyte character length in PostgreSQL text manipulation allows a database user to issue crafted queries that achieve a buffer overrun.  That suffices to execute arbitrary code as the operating system user running the database.  Versions before PostgreSQL 18.2, 17.8, 16.12, 15.16, and 14.21 are affected."
+      }
+    ]
+  },
+  "DeviceTelemetry_Broker": {
+    "metadata": {
+      "id": "blk_broker",
+      "name": "DeviceTelemetry_Broker",
+      "product": "Mosquitto",
+      "version": "2.0.14",
+      "cpe": "cpe:2.3:a:eclipse:mosquitto:2.0.14:*:*:*:*:*:*:*"
+    },
+    "matched_cves": []
+  },
+  "APIGateway_ReverseProxy": {
+    "metadata": {
+      "id": "blk_proxy",
+      "name": "APIGateway_ReverseProxy",
+      "product": "Nginx",
+      "version": "1.21.6",
+      "cpe": "cpe:2.3:a:f5:nginx:1.21.6:*:*:*:*:*:*:*"
+    },
+    "matched_cves": []
+  },
+  "TLS_CryptoEngine": {
+    "metadata": {
+      "id": "blk_crypto",
+      "name": "TLS_CryptoEngine",
+      "product": "OpenSSL",
+      "version": "3.0.2",
+      "cpe": "cpe:2.3:a:openssl:openssl:3.0.2:*:*:*:*:*:*:*"
+    },
+    "matched_cves": [
+      {
+        "cve_id": "CVE-2022-0778",
+        "description": "The BN_mod_sqrt() function, which computes a modular square root, contains a bug that can cause it to loop forever for non-prime moduli. Internally this function is used when parsing certificates that contain elliptic curve public keys in compressed form or explicit elliptic curve parameters with a base point encoded in compressed form. It is possible to trigger the infinite loop by crafting a certificate that has invalid explicit curve parameters. Since certificate parsing happens prior to verification of the certificate signature, any process that parses an externally supplied certificate may thus be subject to a denial of service attack. The infinite loop can also be reached when parsing crafted private keys as they can contain explicit elliptic curve parameters. Thus vulnerable situations include: - TLS clients consuming server certificates - TLS servers consuming client certificates - Hosting providers taking certificates or private keys from customers - Certificate authorities parsing certification requests from subscribers - Anything else which parses ASN.1 elliptic curve parameters Also any other applications that use the BN_mod_sqrt() where the attacker can control the parameter values are vulnerable to this DoS issue. In the OpenSSL 1.0.2 version the public key is not parsed during initial parsing of the certificate which makes it slightly harder to trigger the infinite loop. However any operation which requires the public key from the certificate will trigger the infinite loop. In particular the attacker can use a self-signed certificate to trigger the loop during verification of the certificate signature. This issue affects OpenSSL versions 1.0.2, 1.1.1 and 3.0. It was addressed in the releases of 1.1.1n and 3.0.2 on the 15th March 2022. Fixed in OpenSSL 3.0.2 (Affected 3.0.0,3.0.1). Fixed in OpenSSL 1.1.1n (Affected 1.1.1-1.1.1m). Fixed in OpenSSL 1.0.2zd (Affected 1.0.2-1.0.2zc)."
+      },
+      {
+        "cve_id": "CVE-2022-1292",
+        "description": "The c_rehash script does not properly sanitise shell metacharacters to prevent command injection. This script is distributed by some operating systems in a manner where it is automatically executed. On such operating systems, an attacker could execute arbitrary commands with the privileges of the script. Use of the c_rehash script is considered obsolete and should be replaced by the OpenSSL rehash command line tool. Fixed in OpenSSL 3.0.3 (Affected 3.0.0,3.0.1,3.0.2). Fixed in OpenSSL 1.1.1o (Affected 1.1.1-1.1.1n). Fixed in OpenSSL 1.0.2ze (Affected 1.0.2-1.0.2zd)."
+      },
+      {
+        "cve_id": "CVE-2022-1343",
+        "description": "The function `OCSP_basic_verify` verifies the signer certificate on an OCSP response. In the case where the (non-default) flag OCSP_NOCHECKS is used then the response will be positive (meaning a successful verification) even in the case where the response signing certificate fails to verify. It is anticipated that most users of `OCSP_basic_verify` will not use the OCSP_NOCHECKS flag. In this case the `OCSP_basic_verify` function will return a negative value (indicating a fatal error) in the case of a certificate verification failure. The normal expected return value in this case would be 0. This issue also impacts the command line OpenSSL \"ocsp\" application. When verifying an ocsp response with the \"-no_cert_checks\" option the command line application will report that the verification is successful even though it has in fact failed. In this case the incorrect successful response will also be accompanied by error messages showing the failure and contradicting the apparently successful result. Fixed in OpenSSL 3.0.3 (Affected 3.0.0,3.0.1,3.0.2)."
+      },
+      {
+        "cve_id": "CVE-2022-1434",
+        "description": "The OpenSSL 3.0 implementation of the RC4-MD5 ciphersuite incorrectly uses the AAD data as the MAC key. This makes the MAC key trivially predictable. An attacker could exploit this issue by performing a man-in-the-middle attack to modify data being sent from one endpoint to an OpenSSL 3.0 recipient such that the modified data would still pass the MAC integrity check. Note that data sent from an OpenSSL 3.0 endpoint to a non-OpenSSL 3.0 endpoint will always be rejected by the recipient and the connection will fail at that point. Many application protocols require data to be sent from the client to the server first. Therefore, in such a case, only an OpenSSL 3.0 server would be impacted when talking to a non-OpenSSL 3.0 client. If both endpoints are OpenSSL 3.0 then the attacker could modify data being sent in both directions. In this case both clients and servers could be affected, regardless of the application protocol. Note that in the absence of an attacker this bug means that an OpenSSL 3.0 endpoint communicating with a non-OpenSSL 3.0 endpoint will fail to complete the handshake when using this ciphersuite. The confidentiality of data is not impacted by this issue, i.e. an attacker cannot decrypt data that has been encrypted using this ciphersuite - they can only modify it. In order for this attack to work both endpoints must legitimately negotiate the RC4-MD5 ciphersuite. This ciphersuite is not compiled by default in OpenSSL 3.0, and is not available within the default provider or the default ciphersuite list. This ciphersuite will never be used if TLSv1.3 has been negotiated. In order for an OpenSSL 3.0 endpoint to use this ciphersuite the following must have occurred: 1) OpenSSL must have been compiled with the (non-default) compile time option enable-weak-ssl-ciphers 2) OpenSSL must have had the legacy provider explicitly loaded (either through application code or via configuration) 3) The ciphersuite must have been explicitly added to the ciphersuite list 4) The libssl security level must have been set to 0 (default is 1) 5) A version of SSL/TLS below TLSv1.3 must have been negotiated 6) Both endpoints must negotiate the RC4-MD5 ciphersuite in preference to any others that both endpoints have in common Fixed in OpenSSL 3.0.3 (Affected 3.0.0,3.0.1,3.0.2)."
+      },
+      {
+        "cve_id": "CVE-2022-1473",
+        "description": "The OPENSSL_LH_flush() function, which empties a hash table, contains a bug that breaks reuse of the memory occuppied by the removed hash table entries. This function is used when decoding certificates or keys. If a long lived process periodically decodes certificates or keys its memory usage will expand without bounds and the process might be terminated by the operating system causing a denial of service. Also traversing the empty hash table entries will take increasingly more time. Typically such long lived processes might be TLS clients or TLS servers configured to accept client certificate authentication. The function was added in the OpenSSL 3.0 version thus older releases are not affected by the issue. Fixed in OpenSSL 3.0.3 (Affected 3.0.0,3.0.1,3.0.2)."
+      },
+      {
+        "cve_id": "CVE-2022-2068",
+        "description": "In addition to the c_rehash shell command injection identified in CVE-2022-1292, further circumstances where the c_rehash script does not properly sanitise shell metacharacters to prevent command injection were found by code review. When the CVE-2022-1292 was fixed it was not discovered that there are other places in the script where the file names of certificates being hashed were possibly passed to a command executed through the shell. This script is distributed by some operating systems in a manner where it is automatically executed. On such operating systems, an attacker could execute arbitrary commands with the privileges of the script. Use of the c_rehash script is considered obsolete and should be replaced by the OpenSSL rehash command line tool. Fixed in OpenSSL 3.0.4 (Affected 3.0.0,3.0.1,3.0.2,3.0.3). Fixed in OpenSSL 1.1.1p (Affected 1.1.1-1.1.1o). Fixed in OpenSSL 1.0.2zf (Affected 1.0.2-1.0.2ze)."
+      },
+      {
+        "cve_id": "CVE-2022-3602",
+        "description": "A buffer overrun can be triggered in X.509 certificate verification, specifically in name constraint checking. Note that this occurs after certificate chain signature verification and requires either a CA to have signed the malicious certificate or for the application to continue certificate verification despite failure to construct a path to a trusted issuer. An attacker can craft a malicious email address to overflow four attacker-controlled bytes on the stack. This buffer overflow could result in a crash (causing a denial of service) or potentially remote code execution. Many platforms implement stack overflow protections which would mitigate against the risk of remote code execution. The risk may be further mitigated based on stack layout for any given platform/compiler. Pre-announcements of CVE-2022-3602 described this issue as CRITICAL. Further analysis based on some of the mitigating factors described above have led this to be downgraded to HIGH. Users are still encouraged to upgrade to a new version as soon as possible. In a TLS client, this can be triggered by connecting to a malicious server. In a TLS server, this can be triggered if the server requests client authentication and a malicious client connects. Fixed in OpenSSL 3.0.7 (Affected 3.0.0,3.0.1,3.0.2,3.0.3,3.0.4,3.0.5,3.0.6)."
+      }
+    ]
+  },
+  "EdgeHost_OS": {
+    "metadata": {
+      "id": "blk_os",
+      "name": "EdgeHost_OS",
+      "product": "Ubuntu Linux",
+      "version": "22.04",
+      "cpe": "cpe:2.3:o:canonical:ubuntu_linux:22.04:*:*:*:lts:*:*:*"
+    },
+    "matched_cves": [
+      {
+        "cve_id": "CVE-2021-3899",
+        "description": "There is a race condition in the 'replaced executable' detection that, with the correct local configuration, allow an attacker to execute arbitrary code as root."
+      },
+      {
+        "cve_id": "CVE-2022-0492",
+        "description": "A vulnerability was found in the Linux kernel\u2019s cgroup_release_agent_write in the kernel/cgroup/cgroup-v1.c function. This flaw, under certain circumstances, allows the use of the cgroups v1 release_agent feature to escalate privileges and bypass the namespace isolation unexpectedly."
+      },
+      {
+        "cve_id": "CVE-2022-1055",
+        "description": "A use-after-free exists in the Linux Kernel in tc_new_tfilter that could allow a local attacker to gain privilege escalation. The exploit requires unprivileged user namespaces. We recommend upgrading past commit 04c2a47ffb13c29778e2a14e414ad4cb5a5db4b5"
+      },
+      {
+        "cve_id": "CVE-2022-29581",
+        "description": "Improper Update of Reference Count vulnerability in net/sched of Linux Kernel allows local attacker to cause privilege escalation to root. This issue affects: Linux Kernel versions prior to 5.18; version 4.14 and later versions."
+      },
+      {
+        "cve_id": "CVE-2022-34918",
+        "description": "An issue was discovered in the Linux kernel through 5.18.9. A type confusion bug in nft_set_elem_init (leading to a buffer overflow) could be used by a local attacker to escalate privileges, a different vulnerability than CVE-2022-32250. (The attacker can obtain root access, but must start with an unprivileged user namespace to obtain CAP_NET_ADMIN access.) This can be fixed in nft_setelem_parse_data in net/netfilter/nf_tables_api.c."
+      },
+      {
+        "cve_id": "CVE-2022-41222",
+        "description": "mm/mremap.c in the Linux kernel before 5.13.3 has a use-after-free via a stale TLB because an rmap lock is not held during a PUD move."
+      },
+      {
+        "cve_id": "CVE-2022-40617",
+        "description": "strongSwan before 5.9.8 allows remote attackers to cause a denial of service in the revocation plugin by sending a crafted end-entity (and intermediate CA) certificate that contains a CRL/OCSP URL that points to a server (under the attacker's control) that doesn't properly respond but (for example) just does nothing after the initial TCP handshake, or sends an excessive amount of application data."
+      },
+      {
+        "cve_id": "CVE-2022-2084",
+        "description": "Sensitive data could be exposed in world readable logs of cloud-init before version 22.3 when schema failures are reported. This leak could include hashed passwords."
+      },
+      {
+        "cve_id": "CVE-2022-2585",
+        "description": "It was discovered that when exec'ing from a non-leader thread, armed POSIX CPU timers would be left on a list but freed, leading to a use-after-free."
+      },
+      {
+        "cve_id": "CVE-2022-2586",
+        "description": "It was discovered that a nft object or expression could reference a nft set on a different nft table, leading to a use-after-free once that table was deleted."
+      },
+      {
+        "cve_id": "CVE-2022-2588",
+        "description": "It was discovered that the cls_route filter implementation in the Linux kernel would not remove an old filter from the hashtable before freeing it if its handle had the value 0."
+      },
+      {
+        "cve_id": "CVE-2022-2602",
+        "description": "io_uring UAF, Unix SCM garbage collection"
+      },
+      {
+        "cve_id": "CVE-2022-3328",
+        "description": "Race condition in snap-confine's must_mkdir_and_open_with_perms()"
+      },
+      {
+        "cve_id": "CVE-2022-1242",
+        "description": "Apport can be tricked into connecting to arbitrary sockets as the root user"
+      },
+      {
+        "cve_id": "CVE-2022-28652",
+        "description": "~/.config/apport/settings parsing is vulnerable to \"billion laughs\" attack"
+      },
+      {
+        "cve_id": "CVE-2022-28654",
+        "description": "is_closing_session() allows users to fill up apport.log"
+      },
+      {
+        "cve_id": "CVE-2022-28655",
+        "description": "is_closing_session() allows users to create arbitrary tcp dbus connections"
+      },
+      {
+        "cve_id": "CVE-2022-28656",
+        "description": "is_closing_session() allows users to consume RAM in the Apport process"
+      },
+      {
+        "cve_id": "CVE-2022-28657",
+        "description": "Apport does not disable python crash handler before entering chroot"
+      },
+      {
+        "cve_id": "CVE-2022-28658",
+        "description": "Apport argument parsing mishandles filename splitting on older kernels resulting in argument spoofing"
+      },
+      {
+        "cve_id": "CVE-2022-1736",
+        "description": "Ubuntu's configuration of gnome-control-center allowed Remote Desktop Sharing to be enabled by default."
+      },
+      {
+        "cve_id": "CVE-2022-1804",
+        "description": "accountsservice no longer drops permissions when writting .pam_environment"
+      },
+      {
+        "cve_id": "CVE-2023-0386",
+        "description": "A flaw was found in the Linux kernel, where unauthorized access to the execution of the setuid file with capabilities was found in the Linux kernel\u2019s OverlayFS subsystem in how a user copies a capable file from a nosuid mount into another mount. This uid mapping bug allows a local user to escalate their privileges on the system."
+      },
+      {
+        "cve_id": "CVE-2023-1380",
+        "description": "A slab-out-of-bound read problem was found in brcmf_get_assoc_ies in drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c in the Linux Kernel. This issue could occur when assoc_info->req_len data is bigger than the size of the buffer, defined as WL_EXTRA_BUF_MAX, leading to a denial of service."
+      },
+      {
+        "cve_id": "CVE-2023-0179",
+        "description": "A buffer overflow vulnerability was found in the Netfilter subsystem in the Linux Kernel. This issue could allow the leakage of both stack and heap addresses, and potentially allow Local Privilege Escalation to the root user via arbitrary code execution."
+      },
+      {
+        "cve_id": "CVE-2023-1326",
+        "description": "A privilege escalation attack was found in apport-cli 2.26.0 and earlier which is similar to CVE-2023-26604. If a system is specially configured to allow unprivileged users to run sudo apport-cli, less is configured as the pager, and the terminal size can be set: a local attacker can escalate privilege. It is extremely unlikely that a system administrator would configure sudo to allow unprivileged users to perform this class of exploit."
+      },
+      {
+        "cve_id": "CVE-2023-1786",
+        "description": "Sensitive data could be exposed in logs of cloud-init before version 23.1.2. An attacker could use this information to find hashed passwords and possibly escalate their privilege."
+      },
+      {
+        "cve_id": "CVE-2023-2612",
+        "description": "Jean-Baptiste Cayrou discovered that the shiftfs file system in the Ubuntu Linux kernel contained a race condition when handling inode locking in some situations. A local attacker could use this to cause a denial of service (kernel deadlock)."
+      },
+      {
+        "cve_id": "CVE-2023-35788",
+        "description": "An issue was discovered in fl_set_geneve_opt in net/sched/cls_flower.c in the Linux kernel before 6.3.7. It allows an out-of-bounds write in the flower classifier code via TCA_FLOWER_KEY_ENC_OPTS_GENEVE packets. This may result in denial of service or privilege escalation."
+      },
+      {
+        "cve_id": "CVE-2023-3389",
+        "description": "A use-after-free vulnerability in the Linux Kernel io_uring subsystem can be exploited to achieve local privilege escalation.\n\nRacing a io_uring cancel poll request with a linked timeout can cause a UAF in a hrtimer.\n\nWe recommend upgrading past commit ef7dfac51d8ed961b742218f526bd589f3900a59 (4716c73b188566865bdd79c3a6709696a224ac04 for 5.10 stable and\u00a00e388fce7aec40992eadee654193cad345d62663 for 5.15 stable)."
+      },
+      {
+        "cve_id": "CVE-2023-31248",
+        "description": "Linux Kernel nftables Use-After-Free Local Privilege Escalation Vulnerability; `nft_chain_lookup_byid()` failed to check whether a chain was active and CAP_NET_ADMIN is in any user or network namespace"
+      },
+      {
+        "cve_id": "CVE-2023-3567",
+        "description": "A use-after-free flaw was found in vcs_read in drivers/tty/vt/vc_screen.c in vc_screen in the Linux Kernel. This issue may allow an attacker with local user access to cause a system crash or leak internal kernel information."
+      },
+      {
+        "cve_id": "CVE-2023-40283",
+        "description": "An issue was discovered in l2cap_sock_release in net/bluetooth/l2cap_sock.c in the Linux kernel before 6.4.10. There is a use-after-free because the children of an sk are mishandled."
+      },
+      {
+        "cve_id": "CVE-2023-1523",
+        "description": "Using the TIOCLINUX ioctl request, a malicious snap could inject contents into the input of the controlling terminal which could allow it to cause arbitrary commands to be executed outside of the snap sandbox after the snap exits. Graphical terminal emulators like xterm, gnome-terminal and others are not affected - this can only be exploited when snaps are run on a virtual console."
+      },
+      {
+        "cve_id": "CVE-2023-3297",
+        "description": "In Ubuntu's accountsservice an unprivileged local attacker can trigger a use-after-free vulnerability in accountsservice by sending a D-Bus message to the accounts-daemon process."
+      },
+      {
+        "cve_id": "CVE-2023-3777",
+        "description": "A use-after-free vulnerability in the Linux kernel's netfilter: nf_tables component can be exploited to achieve local privilege escalation.\n\nWhen nf_tables_delrule() is flushing table rules, it is not checked whether the chain is bound and the chain's owner rule can also release the objects in certain circumstances.\n\nWe recommend upgrading past commit 6eaf41e87a223ae6f8e7a28d6e78384ad7e407f8."
+      },
+      {
+        "cve_id": "CVE-2023-44216",
+        "description": "PVRIC (PowerVR Image Compression) on Imagination 2018 and later GPU devices offers software-transparent compression that enables cross-origin pixel-stealing attacks against feTurbulence and feBlend in the SVG Filter specification, aka a GPU.zip issue. For example, attackers can sometimes accurately determine text contained on a web page from one origin if they control a resource from a different origin."
+      },
+      {
+        "cve_id": "CVE-2023-4911",
+        "description": "A buffer overflow was discovered in the GNU C Library's dynamic loader ld.so while processing the GLIBC_TUNABLES environment variable. This issue could allow a local attacker to use maliciously crafted GLIBC_TUNABLES environment variables when launching binaries with SUID permission to execute code with elevated privileges."
+      },
+      {
+        "cve_id": "CVE-2023-45866",
+        "description": "Bluetooth HID Hosts in BlueZ may permit an unauthenticated Peripheral role HID Device to initiate and establish an encrypted connection, and accept HID keyboard reports, potentially permitting injection of HID messages when no user interaction has occurred in the Central role to authorize such access. An example affected package is bluez 5.64-0ubuntu1 in Ubuntu 22.04LTS. NOTE: in some cases, a CVE-2020-0556 mitigation would have already addressed this Bluetooth HID Hosts issue."
+      },
+      {
+        "cve_id": "CVE-2023-1032",
+        "description": "The Linux kernel io_uring IORING_OP_SOCKET operation contained a double free in function __sys_socket_file() in file net/socket.c. This issue was introduced in da214a475f8bd1d3e9e7a19ddfeb4d1617551bab and fixed in 649c15c7691e9b13cbe9bf6c65c365350e056067."
+      },
+      {
+        "cve_id": "CVE-2023-5616",
+        "description": "In Ubuntu, gnome-control-center did not properly reflect SSH remote login status when the system was configured to use systemd socket activation for openssh-server. This could unknowingly leave the local machine exposed to remote SSH access contrary to expectation of the user."
+      },
+      {
+        "cve_id": "CVE-2024-5493",
+        "description": "Heap buffer overflow in WebRTC in Google Chrome prior to 125.0.6422.141 allowed a remote attacker to potentially exploit heap corruption via a crafted HTML page. (Chromium security severity: High)"
+      },
+      {
+        "cve_id": "CVE-2024-6387",
+        "description": "A security regression (CVE-2006-5051) was discovered in OpenSSH's server (sshd). There is a race condition which can lead sshd to handle some signals in an unsafe manner. An unauthenticated, remote attacker may be able to trigger it by failing to authenticate within a set time period."
+      },
+      {
+        "cve_id": "CVE-2024-6773",
+        "description": "Inappropriate implementation in V8 in Google Chrome prior to 126.0.6478.182 allowed a remote attacker to potentially exploit heap corruption via a crafted HTML page. (Chromium security severity: High)"
+      },
+      {
+        "cve_id": "CVE-2024-0115",
+        "description": "NVIDIA CV-CUDA for Ubuntu 20.04, Ubuntu 22.04, and Jetpack contains a vulnerability in Python APIs where a user may cause an uncontrolled resource consumption issue by a long running CV-CUDA Python process. A successful exploit of this vulnerability may lead to denial of service and data loss."
+      },
+      {
+        "cve_id": "CVE-2025-5054",
+        "description": "Race condition in Canonical apport up to and including 2.32.0 allows a local attacker to leak sensitive information via PID-reuse by leveraging namespaces.\n\n\n\n\nWhen handling a crash, the function `_check_global_pid_and_forward`, which detects if the crashing process resided in a container, was being called before `consistency_checks`, which attempts to detect if the crashing process had been replaced. Because of this, if a process crashed and was quickly replaced with a containerized one, apport could be made to forward the core dump to the container, potentially leaking sensitive information. `consistency_checks` is now being called before `_check_global_pid_and_forward`. Additionally, given that the PID-reuse race condition cannot be reliably detected from userspace alone, crashes are only forwarded to containers if the kernel provided a pidfd, or if the crashing process was unprivileged (i.e., if dump mode == 1)."
+      },
+      {
+        "cve_id": "CVE-2025-32463",
+        "description": "Sudo before 1.9.17p1 allows local users to obtain root access because /etc/nsswitch.conf from a user-controlled directory is used with the --chroot option."
+      }
+    ]
+  },
+  "Container_Runtime": {
+    "metadata": {
+      "id": "blk_container",
+      "name": "Container_Runtime",
+      "product": "Docker",
+      "version": "20.10.14",
+      "cpe": "cpe:2.3:a:docker:docker:20.10.14:*:*:*:*:*:*:*"
+    },
+    "matched_cves": [
+      {
+        "cve_id": "CVE-2022-24769",
+        "description": "Moby is an open-source project created by Docker to enable and accelerate software containerization. A bug was found in Moby (Docker Engine) prior to version 20.10.14 where containers were incorrectly started with non-empty inheritable Linux process capabilities, creating an atypical Linux environment and enabling programs with inheritable file capabilities to elevate those capabilities to the permitted set during `execve(2)`. Normally, when executable programs have specified permitted file capabilities, otherwise unprivileged users and processes can execute those programs and gain the specified file capabilities up to the bounding set. Due to this bug, containers which included executable programs with inheritable file capabilities allowed otherwise unprivileged users and processes to additionally gain these inheritable file capabilities up to the container's bounding set. Containers which use Linux users and groups to perform privilege separation inside the container are most directly impacted. This bug did not affect the container security sandbox as the inheritable set never contained more capabilities than were included in the container's bounding set. This bug has been fixed in Moby (Docker Engine) 20.10.14. Running containers should be stopped, deleted, and recreated for the inheritable capabilities to be reset. This fix changes Moby (Docker Engine) behavior such that containers are started with a more typical Linux environment. As a workaround, the entry point of a container can be modified to use a utility like `capsh(1)` to drop inheritable capabilities prior to the primary process starting."
+      }
+    ]
+  },
+  "Clinician_AuthService": {
+    "metadata": {
+      "id": "blk_auth",
+      "name": "Clinician_AuthService",
+      "product": "Keycloak",
+      "version": "19.0.1",
+      "cpe": "cpe:2.3:a:redhat:keycloak:19.0.1:*:*:*:*:*:*:*"
+    },
+    "matched_cves": []
+  },
+  "TB1_IoT_LAN": {
+    "metadata": {
+      "id": "tb_iot",
+      "name": "TB1_IoT_LAN",
+      "product": null,
+      "version": null,
+      "cpe": null
+    },
+    "matched_cves": []
+  },
+  "TB2_Edge_Processing": {
+    "metadata": {
+      "id": "tb_edge",
+      "name": "TB2_Edge_Processing",
+      "product": null,
+      "version": null,
+      "cpe": null
+    },
+    "matched_cves": []
+  },
+  "TB3_Cloud_DMZ": {
+    "metadata": {
+      "id": "tb_cloud",
+      "name": "TB3_Cloud_DMZ",
+      "product": null,
+      "version": null,
+      "cpe": null
+    },
+    "matched_cves": []
+  }
+}
