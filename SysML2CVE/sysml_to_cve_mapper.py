@@ -168,4 +168,3 @@ final_mapping = perform_mapping(components, NVD_DIR)
 
 with open('./SysML2CVE/cve_mapping_output.json', 'w') as f:
     json.dump(final_mapping, f, indent=2)
-
