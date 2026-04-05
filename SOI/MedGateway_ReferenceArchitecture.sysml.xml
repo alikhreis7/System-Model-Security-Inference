@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  SysML Reference Architecture: MedGateway — Healthcare IoT Edge Gateway
+  ========================================================================
+  Group 9 — CSI 5388 / ELG 5271
+  Author: Ali Khreis (300109678)
+  Date: February 2026
+  
+  Purpose: This SysML model defines a healthcare IoT edge gateway system
+  composed of real-world software components with well-documented CVEs.
+  It serves as the input artifact for the hybrid neuro-symbolic threat
+  modeling pipeline (S1: SysML Parser & Extractor).
+  
+  System Description:
+  A hospital-deployed edge gateway that aggregates patient telemetry from
+  IoT medical devices, processes the data locally, and forwards it to a
+  cloud-based Electronic Health Record (EHR) system. The system handles
+  sensitive PHI (Protected Health Information) and must comply with
+  HIPAA security requirements.
+  
+  Architecture Rationale:
+  Components were selected to represent a realistic CPS deployment with:
+  - Multiple trust boundaries (IoT LAN, Edge Processing, Cloud DMZ)
+  - Diverse vulnerability classes (RCE, injection, crypto, DoS, auth bypass)
+  - Rich CVE/CPE coverage in NVD for downstream pipeline validation
+  - Mix of application, middleware, OS, and firmware layers
+-->
+<xmi:XMI xmlns:xmi="http://www.omg.org/spec/XMI/20131001"
+         xmlns:uml="http://www.omg.org/spec/UML/20131001"
+         xmlns:sysml="http://www.omg.org/spec/SysML/20150709"
+         xmi:version="2.5">
+
+  <!-- ================================================================== -->
+  <!-- MODEL ROOT                                                         -->
+  <!-- ================================================================== -->
+  <uml:Model xmi:id="model_root" name="MedGateway_ReferenceArchitecture">
+    <packagedElement xmi:type="uml:Package" xmi:id="pkg_system" name="SystemArchitecture">
+      
+      <!-- ============================================================== -->
+      <!-- BLOCK DEFINITION DIAGRAM (BDD): System Hierarchy               -->
+      <!-- ============================================================== -->
+      
+      <!-- TOP-LEVEL SYSTEM BLOCK -->
+      <packagedElement xmi:type="sysml:Block" xmi:id="blk_medgateway" name="MedGateway_System">
+        <ownedComment xmi:id="cmt_sys" body="Healthcare IoT Edge Gateway — aggregates patient telemetry from bedside monitors, infusion pumps, and wearable sensors; performs local analytics; forwards to cloud EHR."/>
+        <ownedAttribute xmi:id="attr_sys_classification" name="dataClassification" type="string" default="PHI — HIPAA Regulated"/>
+        <ownedAttribute xmi:id="attr_sys_deployment" name="deploymentZone" type="string" default="Hospital Edge Network — DMZ"/>
+      </packagedElement>
+
+      <!-- ============================================================== -->
+      <!-- COMPONENT BLOCKS WITH SOFTWARE METADATA                        -->
+      <!-- Each block carries vendor/product/version for CPE derivation   -->
+      <!-- ============================================================== -->
+
+      <!-- ── 1. WEB APPLICATION SERVER ── -->
+      <packagedElement xmi:type="sysml:Block" xmi:id="blk_webapp" name="ClinicalDashboard_WebApp">
+        <ownedComment xmi:id="cmt_webapp" body="Spring Boot-based web application providing clinician dashboard for real-time patient monitoring. Exposes REST APIs consumed by mobile and desktop clients."/>
+        <ownedAttribute xmi:id="attr_webapp_vendor" name="vendor" type="string" default="VMware"/>
+        <ownedAttribute xmi:id="attr_webapp_product" name="product" type="string" default="Spring Framework"/>
+        <ownedAttribute xmi:id="attr_webapp_version" name="version" type="string" default="5.3.18"/>
+        <ownedAttribute xmi:id="attr_webapp_layer" name="architectureLayer" type="string" default="Application"/>
+        <ownedAttribute xmi:id="attr_webapp_language" name="language" type="string" default="Java"/>
+        <ownedAttribute xmi:id="attr_webapp_cpe_hint" name="cpeHint" type="string" default="cpe:2.3:a:vmware:spring_framework:5.3.18:*:*:*:*:*:*:*"/>
+        <!-- Key CVEs: CVE-2022-22965 (Spring4Shell, CVSS 9.8), CVE-2022-22950 (DoS, CVSS 6.5) -->
+      </packagedElement>
+
+      <!-- ── 2. LOGGING FRAMEWORK ── -->
+      <packagedElement xmi:type="sysml:Block" xmi:id="blk_logging" name="AuditLog_Service">
+        <ownedComment xmi:id="cmt_logging" body="Apache Log4j 2 logging framework used for HIPAA-mandated audit logging of all PHI access events and system activities."/>
+        <ownedAttribute xmi:id="attr_log_vendor" name="vendor" type="string" default="Apache"/>
+        <ownedAttribute xmi:id="attr_log_product" name="product" type="string" default="Log4j"/>
+        <ownedAttribute xmi:id="attr_log_version" name="version" type="string" default="2.14.1"/>
+        <ownedAttribute xmi:id="attr_log_layer" name="architectureLayer" type="string" default="Middleware"/>
+        <ownedAttribute xmi:id="attr_log_language" name="language" type="string" default="Java"/>
+        <ownedAttribute xmi:id="attr_log_cpe_hint" name="cpeHint" type="string" default="cpe:2.3:a:apache:log4j:2.14.1:*:*:*:*:*:*:*"/>
+        <!-- Key CVEs: CVE-2021-44228 (Log4Shell, CVSS 10.0), CVE-2021-45046 (CVSS 9.0), CVE-2021-45105 (CVSS 5.9) -->
+      </packagedElement>
+
+      <!-- ── 3. DATABASE ── -->
+      <packagedElement xmi:type="sysml:Block" xmi:id="blk_database" name="PatientData_Store">
+        <ownedComment xmi:id="cmt_db" body="PostgreSQL database storing patient telemetry time-series, device configurations, and clinician access logs. Contains PHI and PII."/>
+        <ownedAttribute xmi:id="attr_db_vendor" name="vendor" type="string" default="PostgreSQL"/>
+        <ownedAttribute xmi:id="attr_db_product" name="product" type="string" default="PostgreSQL"/>
+        <ownedAttribute xmi:id="attr_db_version" name="version" type="string" default="14.2"/>
+        <ownedAttribute xmi:id="attr_db_layer" name="architectureLayer" type="string" default="Data"/>
+        <ownedAttribute xmi:id="attr_db_cpe_hint" name="cpeHint" type="string" default="cpe:2.3:a:postgresql:postgresql:14.2:*:*:*:*:*:*:*"/>
+        <!-- Key CVEs: CVE-2022-1552 (privilege escalation, CVSS 8.8), CVE-2022-2625 (extension hijack, CVSS 8.0) -->
+      </packagedElement>
+
+      <!-- ── 4. MESSAGE BROKER ── -->
+      <packagedElement xmi:type="sysml:Block" xmi:id="blk_broker" name="DeviceTelemetry_Broker">
+        <ownedComment xmi:id="cmt_broker" body="Eclipse Mosquitto MQTT broker receiving telemetry from bedside IoT devices (heart monitors, infusion pumps, SpO2 sensors). Bridges IoT LAN to edge processing layer."/>
+        <ownedAttribute xmi:id="attr_broker_vendor" name="vendor" type="string" default="Eclipse"/>
+        <ownedAttribute xmi:id="attr_broker_product" name="product" type="string" default="Mosquitto"/>
+        <ownedAttribute xmi:id="attr_broker_version" name="version" type="string" default="2.0.14"/>
+        <ownedAttribute xmi:id="attr_broker_layer" name="architectureLayer" type="string" default="Middleware"/>
+        <ownedAttribute xmi:id="attr_broker_protocol" name="protocol" type="string" default="MQTT 3.1.1 / MQTT 5.0"/>
+        <ownedAttribute xmi:id="attr_broker_cpe_hint" name="cpeHint" type="string" default="cpe:2.3:a:eclipse:mosquitto:2.0.14:*:*:*:*:*:*:*"/>
+        <!-- Key CVEs: CVE-2023-0809 (DoS, CVSS 7.5), CVE-2023-28366 (memory leak, CVSS 7.5), CVE-2023-3592 (memory leak, CVSS 7.5) -->
+      </packagedElement>
+
+      <!-- ── 5. REVERSE PROXY / API GATEWAY ── -->
+      <packagedElement xmi:type="sysml:Block" xmi:id="blk_proxy" name="APIGateway_ReverseProxy">
+        <ownedComment xmi:id="cmt_proxy" body="Nginx reverse proxy serving as the API gateway and TLS termination point. Routes external clinician traffic to the ClinicalDashboard_WebApp and enforces rate limiting."/>
+        <ownedAttribute xmi:id="attr_proxy_vendor" name="vendor" type="string" default="F5"/>
+        <ownedAttribute xmi:id="attr_proxy_product" name="product" type="string" default="Nginx"/>
+        <ownedAttribute xmi:id="attr_proxy_version" name="version" type="string" default="1.21.6"/>
+        <ownedAttribute xmi:id="attr_proxy_layer" name="architectureLayer" type="string" default="Infrastructure"/>
+        <ownedAttribute xmi:id="attr_proxy_cpe_hint" name="cpeHint" type="string" default="cpe:2.3:a:f5:nginx:1.21.6:*:*:*:*:*:*:*"/>
+        <!-- Key CVEs: CVE-2022-41741 (memory corruption, CVSS 7.8), CVE-2022-41742 (memory disclosure, CVSS 7.1) -->
+      </packagedElement>
+
+      <!-- ── 6. TLS / CRYPTO LIBRARY ── -->
+      <packagedElement xmi:type="sysml:Block" xmi:id="blk_crypto" name="TLS_CryptoEngine">
+        <ownedComment xmi:id="cmt_crypto" body="OpenSSL cryptographic library providing TLS 1.2/1.3 for all encrypted communications: clinician HTTPS sessions, MQTT-TLS device connections, and database SSL links."/>
+        <ownedAttribute xmi:id="attr_crypto_vendor" name="vendor" type="string" default="OpenSSL"/>
+        <ownedAttribute xmi:id="attr_crypto_product" name="product" type="string" default="OpenSSL"/>
+        <ownedAttribute xmi:id="attr_crypto_version" name="version" type="string" default="3.0.2"/>
+        <ownedAttribute xmi:id="attr_crypto_layer" name="architectureLayer" type="string" default="Infrastructure"/>
+        <ownedAttribute xmi:id="attr_crypto_cpe_hint" name="cpeHint" type="string" default="cpe:2.3:a:openssl:openssl:3.0.2:*:*:*:*:*:*:*"/>
+        <!-- Key CVEs: CVE-2022-3602 (X.509 buffer overflow, CVSS 7.5), CVE-2022-3786 (X.509 overflow, CVSS 7.5), CVE-2022-0778 (DoS infinite loop, CVSS 7.5) -->
+      </packagedElement>
+
+      <!-- ── 7. OPERATING SYSTEM ── -->
+      <packagedElement xmi:type="sysml:Block" xmi:id="blk_os" name="EdgeHost_OS">
+        <ownedComment xmi:id="cmt_os" body="Ubuntu Linux host operating system for the edge gateway hardware. Runs all containerized and native services."/>
+        <ownedAttribute xmi:id="attr_os_vendor" name="vendor" type="string" default="Canonical"/>
+        <ownedAttribute xmi:id="attr_os_product" name="product" type="string" default="Ubuntu Linux"/>
+        <ownedAttribute xmi:id="attr_os_version" name="version" type="string" default="22.04"/>
+        <ownedAttribute xmi:id="attr_os_layer" name="architectureLayer" type="string" default="Platform"/>
+        <ownedAttribute xmi:id="attr_os_cpe_hint" name="cpeHint" type="string" default="cpe:2.3:o:canonical:ubuntu_linux:22.04:*:*:*:lts:*:*:*"/>
+        <!-- Key CVEs: CVE-2023-32629 (privilege escalation, CVSS 7.8), CVE-2023-2640 (privilege escalation, CVSS 7.8) -->
+      </packagedElement>
+
+      <!-- ── 8. CONTAINER RUNTIME ── -->
+      <packagedElement xmi:type="sysml:Block" xmi:id="blk_container" name="Container_Runtime">
+        <ownedComment xmi:id="cmt_container" body="Docker container runtime hosting the web application, MQTT broker, and database as isolated containers on the edge gateway."/>
+        <ownedAttribute xmi:id="attr_container_vendor" name="vendor" type="string" default="Docker"/>
+        <ownedAttribute xmi:id="attr_container_product" name="product" type="string" default="Docker"/>
+        <ownedAttribute xmi:id="attr_container_version" name="version" type="string" default="20.10.14"/>
+        <ownedAttribute xmi:id="attr_container_layer" name="architectureLayer" type="string" default="Platform"/>
+        <ownedAttribute xmi:id="attr_container_cpe_hint" name="cpeHint" type="string" default="cpe:2.3:a:docker:docker:20.10.14:*:*:*:*:*:*:*"/>
+        <!-- Key CVEs: CVE-2024-21626 (container escape, CVSS 8.6), CVE-2022-24769 (privilege escalation, CVSS 5.9) -->
+      </packagedElement>
+
+      <!-- ── 9. AUTHENTICATION SERVICE ── -->
+      <packagedElement xmi:type="sysml:Block" xmi:id="blk_auth" name="Clinician_AuthService">
+        <ownedComment xmi:id="cmt_auth" body="Keycloak identity and access management server providing OAuth 2.0 / OpenID Connect authentication for clinicians accessing the dashboard."/>
+        <ownedAttribute xmi:id="attr_auth_vendor" name="vendor" type="string" default="Red Hat"/>
+        <ownedAttribute xmi:id="attr_auth_product" name="product" type="string" default="Keycloak"/>
+        <ownedAttribute xmi:id="attr_auth_version" name="version" type="string" default="19.0.1"/>
+        <ownedAttribute xmi:id="attr_auth_layer" name="architectureLayer" type="string" default="Application"/>
+        <ownedAttribute xmi:id="attr_auth_cpe_hint" name="cpeHint" type="string" default="cpe:2.3:a:redhat:keycloak:19.0.1:*:*:*:*:*:*:*"/>
+        <!-- Key CVEs: CVE-2023-6134 (XSS, CVSS 5.4), CVE-2023-6291 (redirect URI bypass, CVSS 7.1), CVE-2024-1249 (DoS, CVSS 7.4) -->
+      </packagedElement>
+
+      <!-- ============================================================== -->
+      <!-- INTERFACE DEFINITIONS                                           -->
+      <!-- ============================================================== -->
+      
+      <packagedElement xmi:type="uml:Package" xmi:id="pkg_interfaces" name="Interfaces">
+        
+        <packagedElement xmi:type="sysml:InterfaceBlock" xmi:id="iface_https" name="HTTPS_REST_API">
+          <ownedAttribute xmi:id="attr_iface_https_proto" name="protocol" type="string" default="HTTPS/TLS 1.3"/>
+          <ownedAttribute xmi:id="attr_iface_https_port" name="port" type="integer" default="443"/>
+          <ownedAttribute xmi:id="attr_iface_https_auth" name="authentication" type="string" default="OAuth 2.0 Bearer Token"/>
+          <ownedAttribute xmi:id="attr_iface_https_data" name="dataFormat" type="string" default="JSON (FHIR R4)"/>
+        </packagedElement>
+
+        <packagedElement xmi:type="sysml:InterfaceBlock" xmi:id="iface_mqtt" name="MQTT_Telemetry">
+          <ownedAttribute xmi:id="attr_iface_mqtt_proto" name="protocol" type="string" default="MQTT 5.0 over TLS"/>
+          <ownedAttribute xmi:id="attr_iface_mqtt_port" name="port" type="integer" default="8883"/>
+          <ownedAttribute xmi:id="attr_iface_mqtt_auth" name="authentication" type="string" default="X.509 Client Certificate"/>
+          <ownedAttribute xmi:id="attr_iface_mqtt_qos" name="qos" type="string" default="QoS 1 (At Least Once)"/>
+        </packagedElement>
+
+        <packagedElement xmi:type="sysml:InterfaceBlock" xmi:id="iface_sql" name="PostgreSQL_Connection">
+          <ownedAttribute xmi:id="attr_iface_sql_proto" name="protocol" type="string" default="PostgreSQL Wire Protocol over SSL"/>
+          <ownedAttribute xmi:id="attr_iface_sql_port" name="port" type="integer" default="5432"/>
+          <ownedAttribute xmi:id="attr_iface_sql_auth" name="authentication" type="string" default="SCRAM-SHA-256"/>
+        </packagedElement>
+
+        <packagedElement xmi:type="sysml:InterfaceBlock" xmi:id="iface_oidc" name="OIDC_AuthFlow">
+          <ownedAttribute xmi:id="attr_iface_oidc_proto" name="protocol" type="string" default="OpenID Connect 1.0 / OAuth 2.0"/>
+          <ownedAttribute xmi:id="attr_iface_oidc_port" name="port" type="integer" default="8443"/>
+          <ownedAttribute xmi:id="attr_iface_oidc_flow" name="grantType" type="string" default="Authorization Code with PKCE"/>
+        </packagedElement>
+
+        <packagedElement xmi:type="sysml:InterfaceBlock" xmi:id="iface_cloud" name="Cloud_EHR_Uplink">
+          <ownedAttribute xmi:id="attr_iface_cloud_proto" name="protocol" type="string" default="HTTPS/TLS 1.3 (mTLS)"/>
+          <ownedAttribute xmi:id="attr_iface_cloud_port" name="port" type="integer" default="443"/>
+          <ownedAttribute xmi:id="attr_iface_cloud_data" name="dataFormat" type="string" default="HL7 FHIR R4 Bundle"/>
+          <ownedAttribute xmi:id="attr_iface_cloud_auth" name="authentication" type="string" default="Mutual TLS + API Key"/>
+        </packagedElement>
+
+      </packagedElement>
+
+      <!-- ============================================================== -->
+      <!-- INTERNAL BLOCK DIAGRAM (IBD): Connections                       -->
+      <!-- ============================================================== -->
+
+      <packagedElement xmi:type="uml:Package" xmi:id="pkg_connections" name="InternalConnections">
+        
+        <!-- IoT Devices → MQTT Broker -->
+        <packagedElement xmi:type="sysml:Connector" xmi:id="conn_iot_broker" name="DeviceToGateway">
+          <end xmi:id="conn_iot_broker_src" role="IoT Medical Devices (external)"/>
+          <end xmi:id="conn_iot_broker_tgt" role="blk_broker"/>
+          <ownedComment body="Bedside monitors, infusion pumps, and wearable sensors publish telemetry via MQTT over TLS. Trust boundary: IoT LAN → Edge Processing."/>
+          <appliedInterface xmi:idref="iface_mqtt"/>
+        </packagedElement>
+
+        <!-- MQTT Broker → Web Application -->
+        <packagedElement xmi:type="sysml:Connector" xmi:id="conn_broker_webapp" name="TelemetryIngestion">
+          <end xmi:id="conn_broker_webapp_src" role="blk_broker"/>
+          <end xmi:id="conn_broker_webapp_tgt" role="blk_webapp"/>
+          <ownedComment body="Web application subscribes to MQTT topics for real-time patient data display and local analytics processing."/>
+        </packagedElement>
+
+        <!-- Web Application → Database -->
+        <packagedElement xmi:type="sysml:Connector" xmi:id="conn_webapp_db" name="DataPersistence">
+          <end xmi:id="conn_webapp_db_src" role="blk_webapp"/>
+          <end xmi:id="conn_webapp_db_tgt" role="blk_database"/>
+          <ownedComment body="Application persists patient telemetry time-series and clinician access events to PostgreSQL."/>
+          <appliedInterface xmi:idref="iface_sql"/>
+        </packagedElement>
+
+        <!-- Web Application → Audit Logger -->
+        <packagedElement xmi:type="sysml:Connector" xmi:id="conn_webapp_log" name="AuditLogging">
+          <end xmi:id="conn_webapp_log_src" role="blk_webapp"/>
+          <end xmi:id="conn_webapp_log_tgt" role="blk_logging"/>
+          <ownedComment body="All PHI access events are logged via Log4j for HIPAA audit trail compliance."/>
+        </packagedElement>
+
+        <!-- Nginx → Web Application -->
+        <packagedElement xmi:type="sysml:Connector" xmi:id="conn_proxy_webapp" name="ReverseProxy">
+          <end xmi:id="conn_proxy_webapp_src" role="blk_proxy"/>
+          <end xmi:id="conn_proxy_webapp_tgt" role="blk_webapp"/>
+          <ownedComment body="Nginx terminates TLS and proxies authenticated clinician requests to the Spring Boot application."/>
+          <appliedInterface xmi:idref="iface_https"/>
+        </packagedElement>
+
+        <!-- Web Application → Keycloak -->
+        <packagedElement xmi:type="sysml:Connector" xmi:id="conn_webapp_auth" name="AuthenticationFlow">
+          <end xmi:id="conn_webapp_auth_src" role="blk_webapp"/>
+          <end xmi:id="conn_webapp_auth_tgt" role="blk_auth"/>
+          <ownedComment body="Clinician authentication delegated to Keycloak via OpenID Connect authorization code flow with PKCE."/>
+          <appliedInterface xmi:idref="iface_oidc"/>
+        </packagedElement>
+
+        <!-- Web Application → Cloud EHR -->
+        <packagedElement xmi:type="sysml:Connector" xmi:id="conn_webapp_cloud" name="CloudUplink">
+          <end xmi:id="conn_webapp_cloud_src" role="blk_webapp"/>
+          <end xmi:id="conn_webapp_cloud_tgt" role="Cloud EHR System (external)"/>
+          <ownedComment body="Aggregated patient data forwarded to cloud EHR via mutual TLS. Trust boundary: Edge Processing → Cloud DMZ."/>
+          <appliedInterface xmi:idref="iface_cloud"/>
+        </packagedElement>
+
+        <!-- OpenSSL provides TLS for Nginx, MQTT, PostgreSQL, Keycloak -->
+        <packagedElement xmi:type="sysml:Connector" xmi:id="conn_crypto_all" name="TLSProvider">
+          <end xmi:id="conn_crypto_src" role="blk_crypto"/>
+          <end xmi:id="conn_crypto_tgt" role="blk_proxy, blk_broker, blk_database, blk_auth"/>
+          <ownedComment body="OpenSSL shared library provides TLS handshake and encryption for all encrypted channels. A vulnerability here affects ALL encrypted communications."/>
+        </packagedElement>
+
+        <!-- Docker hosts webapp, broker, database, keycloak -->
+        <packagedElement xmi:type="sysml:Connector" xmi:id="conn_container_all" name="ContainerHost">
+          <end xmi:id="conn_container_src" role="blk_container"/>
+          <end xmi:id="conn_container_tgt" role="blk_webapp, blk_broker, blk_database, blk_auth"/>
+          <ownedComment body="Docker runtime provides process isolation for application containers. Container escape vulnerabilities compromise all hosted services."/>
+        </packagedElement>
+
+        <!-- OS hosts everything -->
+        <packagedElement xmi:type="sysml:Connector" xmi:id="conn_os_all" name="PlatformHost">
+          <end xmi:id="conn_os_src" role="blk_os"/>
+          <end xmi:id="conn_os_tgt" role="blk_container, blk_crypto, blk_proxy"/>
+          <ownedComment body="Ubuntu Linux host platform. Kernel vulnerabilities provide root-level access to all services."/>
+        </packagedElement>
+
+      </packagedElement>
+
+      <!-- ============================================================== -->
+      <!-- DEPLOYMENT DIAGRAM                                              -->
+      <!-- ============================================================== -->
+
+      <packagedElement xmi:type="uml:Package" xmi:id="pkg_deployment" name="Deployment">
+        
+        <packagedElement xmi:type="uml:Node" xmi:id="node_edge" name="EdgeGateway_Hardware">
+          <ownedComment body="Industrial-grade edge computing appliance. Intel NUC or similar. Located in hospital server room / network closet."/>
+          <ownedAttribute xmi:id="attr_node_cpu" name="cpu" type="string" default="Intel Core i7-1165G7"/>
+          <ownedAttribute xmi:id="attr_node_ram" name="ram" type="string" default="32 GB DDR4"/>
+          <ownedAttribute xmi:id="attr_node_storage" name="storage" type="string" default="512 GB NVMe SSD (encrypted at rest)"/>
+          <ownedAttribute xmi:id="attr_node_nic" name="networkInterfaces" type="string" default="2x 1GbE (IoT LAN + Hospital LAN)"/>
+          
+          <nestedNode xmi:type="uml:ExecutionEnvironment" xmi:id="env_os" name="Ubuntu 22.04 LTS">
+            <deployedArtifact xmi:idref="blk_os"/>
+            
+            <nestedNode xmi:type="uml:ExecutionEnvironment" xmi:id="env_docker" name="Docker 20.10.14">
+              <deployedArtifact xmi:idref="blk_container"/>
+              
+              <nestedNode xmi:type="uml:ExecutionEnvironment" xmi:id="env_webapp_container" name="container_webapp">
+                <deployedArtifact xmi:idref="blk_webapp"/>
+                <deployedArtifact xmi:idref="blk_logging"/>
+              </nestedNode>
+              
+              <nestedNode xmi:type="uml:ExecutionEnvironment" xmi:id="env_broker_container" name="container_mqtt">
+                <deployedArtifact xmi:idref="blk_broker"/>
+              </nestedNode>
+              
+              <nestedNode xmi:type="uml:ExecutionEnvironment" xmi:id="env_db_container" name="container_postgres">
+                <deployedArtifact xmi:idref="blk_database"/>
+              </nestedNode>
+              
+              <nestedNode xmi:type="uml:ExecutionEnvironment" xmi:id="env_auth_container" name="container_keycloak">
+                <deployedArtifact xmi:idref="blk_auth"/>
+              </nestedNode>
+            </nestedNode>
+            
+            <!-- Native services (not containerized) -->
+            <deployedArtifact xmi:idref="blk_proxy"/>
+            <deployedArtifact xmi:idref="blk_crypto"/>
+          </nestedNode>
+        </packagedElement>
+
+        <!-- Trust Boundaries -->
+        <packagedElement xmi:type="uml:Package" xmi:id="pkg_trust" name="TrustBoundaries">
+          <packagedElement xmi:type="sysml:Block" xmi:id="tb_iot" name="TB1_IoT_LAN">
+            <ownedComment body="Untrusted: IoT medical devices on isolated VLAN. No direct internet access. Communicates only via MQTT to broker."/>
+          </packagedElement>
+          <packagedElement xmi:type="sysml:Block" xmi:id="tb_edge" name="TB2_Edge_Processing">
+            <ownedComment body="Semi-trusted: Edge gateway processing zone. Contains application logic, database, and authentication services. Physically secured in server room."/>
+          </packagedElement>
+          <packagedElement xmi:type="sysml:Block" xmi:id="tb_cloud" name="TB3_Cloud_DMZ">
+            <ownedComment body="External: Cloud-hosted EHR system. Communication via mutual TLS over hospital WAN link. Subject to cloud provider security controls."/>
+          </packagedElement>
+        </packagedElement>
+
+      </packagedElement>
+
+    </packagedElement>
+  </uml:Model>
+</xmi:XMI>
