@@ -1,0 +1,33 @@
+{
+  "BM25": {
+    "Precision@5": 0.1035,
+    "Precision@10": 0.0943,
+    "NDCG@10": 0.114,
+    "MRR": 0.2769
+  },
+  "Frozen cosine": {
+    "Precision@5": 0.0243,
+    "Precision@10": 0.0209,
+    "NDCG@10": 0.0248,
+    "MRR": 0.0817
+  },
+  "Classifier": {
+    "Precision@5": 0.3239,
+    "Precision@10": 0.295,
+    "NDCG@10": 0.3468,
+    "MRR": 0.5211
+  },
+  "Lookup + Classifier": {
+    "Precision@5": 0.3239,
+    "Precision@10": 0.295,
+    "NDCG@10": 0.3468,
+    "MRR": 0.5211
+  },
+  "Lookup only (known techniques)": {
+    "Precision@5": 1.0,
+    "Precision@10": 1.0,
+    "NDCG@10": 1.0,
+    "MRR": 1.0,
+    "note": "Direct lookup returns exact known mappings (100% for known techniques)."
+  }
+}
